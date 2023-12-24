@@ -20,6 +20,7 @@ function App(){
       }, []);
 
     const GetTodos = () => {
+    console.log("fetching")
     fetch(API_BASE)
     .then(res => res.json())
     .then(data => setItems(data))
@@ -41,25 +42,34 @@ function App(){
      }
 
     return (
-        <div className="container">
-      <div className="heading">
-        <h1>TO-DO-APP</h1>
-      </div>
-      
-      <div className="form">
-        <input type='text' value={input} onChange={handleChange}></input>
-        <button onClick={()=>addItem()}>
-          <span>ADD</span>
-        </button>
+      <div className="container mx-auto p-4">
+      <div className="heading text-center mb-4">
+          <h1 className="text-2xl font-bold text-blue-600">TO-DO-APP</h1>
       </div>
 
-      <div className="todolist">  
-      {items.map((item)=> {
-        const {_id, name} = item
-        return  <TodoItem name={name} id={_id} setItems={setItems} GetTodos={GetTodos}/>   
-      })}
+      <div className="form flex justify-center gap-2 mb-4">
+          <input
+              className="shadow appearance-none border rounded py-2 px-3 text-grey-darker"
+              type='text'
+              value={input}
+              onChange={handleChange}
+              placeholder="Add a new todo"
+          />
+          <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={()=>addItem()}
+          >
+              ADD
+          </button>
       </div>
-    </div>
+
+      <div className="todolist space-y-2">  
+          {items.map((item) => {
+              const {_id, name} = item
+              return <TodoItem key={item._id} name={name} id={_id} setItems={setItems} />   
+          })}
+      </div>
+  </div>
     );
 }
 
