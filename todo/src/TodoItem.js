@@ -1,10 +1,11 @@
 import React, {useState, useEffect, useRef} from "react";
 
+
 const API_BASE= 'http://localhost:4001/todo';
 
 function TodoItem(props){
 
-    const {name, id, setItems} = props
+    const {name, id, setItems, firebase} = props
 
     const [input, setInput] = useState(name);
 
@@ -33,11 +34,16 @@ function TodoItem(props){
     }
     }, [input]);
 
+
     const updateItem = async() => {
+
+      const idToken = await firebase.auth().currentUser.getIdToken();
+
       const data = await fetch(API_BASE + "/update/" + id, {
        method: "PUT",
        headers: {
-         "content-type" : "application/json"
+         "content-type" : "application/json",
+         "Authorization": `${idToken}`
        },
        body: JSON.stringify({
          name: input,
@@ -47,8 +53,14 @@ function TodoItem(props){
 
     const deleteTodo = async(id) => {
       try{
+          const idToken = await firebase.auth().currentUser.getIdToken();
+
           const response = await fetch(API_BASE + "/delete/" + id, {
               method: "DELETE",
+              headers: {
+                "content-type" : "application/json",
+                "Authorization": `${idToken}`
+              },
             });
           if(!response.ok){
               throw new Error("Faild to delete a task")
@@ -62,15 +74,15 @@ function TodoItem(props){
     }
 
     return(
-      <div className="todo flex items-center justify-between bg-white p-2 rounded shadow">
+      <div className="todo flex justify-center items-center">
       <input 
-          className="text-black flex-1 p-2 rounded border-2 border-gray-300 mr-2"
+          className="input w-full max-w-xs input-bordered mx-2"
           type='text'
           value={input}
           onChange={handleChange}
       />
       <button 
-          className="delete-todo bg-red-500 hover:bg-red-700 text-white p-2 rounded"
+          className="btn btn-error"
           onClick={() => deleteTodo(id)}
       >
           <span>X</span>
