@@ -6,7 +6,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import 'firebase/compat/auth';
 import { Context } from "../context/AuthContext";
 
-const API_BASE= 'http://localhost:4001/todo';
+const API_BASE= 'http://192.168.1.63:4001/todo';
 
 function Todo({firebase, isSignedIn}){
 

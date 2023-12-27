@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from "react";
 import { getAuth, signOut } from 'firebase/auth';
 
 
-const API_BASE= 'http://localhost:4001/todo';
+const API_BASE= 'http://192.168.1.63:4001/todo';
 
 function TodoItem(props){
 

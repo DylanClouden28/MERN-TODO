@@ -7,7 +7,6 @@ import Auth from "./pages/Auth"
 
 import fbConfig from "./fbconfig";
 import fbuiConfig from "./fbuiConfig";
-import FirebaseAuth from "./FirebaseAuth";
 import { Navigate, Routes, Route } from "react-router-dom";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
