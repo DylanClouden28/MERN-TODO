@@ -1,77 +1,36 @@
 import { useEffect, useState } from "react";
 
-import ProtectedRoute from "./ProtectedRoute"
+import {ProtectedRoute} from "./ProtectedRoute"
+import { createBrowserRouter, RouterProvider} from 'react-router-dom'
 import Todo from "./pages/Todo"
+import Auth from "./pages/Auth"
 
+import fbConfig from "./fbconfig";
+import fbuiConfig from "./fbuiConfig";
 import FirebaseAuth from "./FirebaseAuth";
 import { Navigate, Routes, Route } from "react-router-dom";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import { AuthContext } from "./context/AuthContext";
 
 const API_BASE= 'http://localhost:4001/todo';
 
-function App(){
-
-    const [items, setItems] = useState([]);
-
-    // Add input state, we will store the user's input in this state
-    const [input, setInput] = useState("");
-    const [darkMode, setDarkMode] = useState(false);
-
-    const firebaseConfig = {
-
-      apiKey: "AIzaSyA1AvTQEUSEfHtFjJyHYmHFuVEYQLrWg0I",
-    
-      authDomain: "mern-todo-154d6.firebaseapp.com",
-    
-      projectId: "mern-todo-154d6",
-    
-      storageBucket: "mern-todo-154d6.appspot.com",
-    
-      messagingSenderId: "1076173669809",
-    
-      appId: "1:1076173669809:web:a404ce4105ac8e64176990",
-    
-      measurementId: "G-1X7R5S7PYF"
-    
-    };
-    
-    firebase.initializeApp(firebaseConfig);
-
-    const uiConfig = {
-      signInSuccessUrl: 'todo',
-      signInOptions: [
-        {
-          provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-          defaultCountry: 'US',
-          recaptchaParameters: {
-            type: 'image', // 'audio'
-            size: 'invisible', // 'invisible' or 'compact'
-            badge: 'bottomleft' //' bottomright' or 'inline' applies to invisible.
-          },
-        }
-      ],
-    };
-    
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-      const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
-        setUser(user); // Set the user object
-      });
-      return () => unregisterAuthObserver(); // Cleanup the observer on unmount
-    }, []);
+function App(firebase){
+    const router = createBrowserRouter([
+      {
+        path:"/signin", element:<Auth uiConfig={fbuiConfig}/>
+      },
+      {
+        path:"/todo", element:<ProtectedRoute><Todo firebase={firebase}/></ProtectedRoute>
+      }
+    ])
 
     return (
-      <Routes>
-        <Route path="/auth" element={<FirebaseAuth uiConfig={uiConfig}/> }/>
+      <AuthContext>
+        <RouterProvider router={router}>
 
-        <Route path="/todo" element={
-          <ProtectedRoute user={user}>
-            <Todo firebase={firebase} user={user}/>
-          </ProtectedRoute>} 
-        />
-      </Routes> 
+        </RouterProvider> 
+      </AuthContext>
     );
 }
 

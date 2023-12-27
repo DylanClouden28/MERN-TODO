@@ -3,6 +3,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import * as firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css'
+import fbuiConfig from './fbuiConfig'
 
 class FirebaseAuth extends Component {
     componentDidMount() {
@@ -13,7 +14,8 @@ class FirebaseAuth extends Component {
           // Use the existing instance
           this.ui = firebaseui.auth.AuthUI.getInstance();
         }
-        this.ui.start('#firebaseui-auth-container', this.props.uiConfig);
+        console.log(this.ui);
+        this.ui.start('#firebaseui-auth-container', fbuiConfig);
       }
 
   componentWillUnmount() {
@@ -21,12 +23,12 @@ class FirebaseAuth extends Component {
         this.ui.reset()
     }
 
-     // Clean up reCAPTCHA instances
-     window.grecaptcha = null;
-     window.recaptcha = null;
+    //  // Clean up reCAPTCHA instances
+    //  window.grecaptcha = null;
+    //  window.recaptcha = null;
  
-     // Remove reCAPTCHA iframes
-     document.querySelectorAll('iframe[src*=recaptcha]').forEach(iframe => iframe.remove());
+    //  // Remove reCAPTCHA iframes
+    //  document.querySelectorAll('iframe[src*=recaptcha]').forEach(iframe => iframe.remove());
   }
 
   render() {

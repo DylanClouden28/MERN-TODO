@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from "react";
+import { getAuth, signOut } from 'firebase/auth';
 
 
 const API_BASE= 'http://localhost:4001/todo';
@@ -12,6 +13,8 @@ function TodoItem(props){
     const firstRenderRef = useRef(true);
 
     const debounceTimeoutRef = useRef(null);
+
+    const auth = getAuth();
 
     const handleChange = (e) => {
       setInput(e.target.value);
@@ -37,7 +40,7 @@ function TodoItem(props){
 
     const updateItem = async() => {
 
-      const idToken = await firebase.auth().currentUser.getIdToken();
+      const idToken = await auth.currentUser.getIdToken();
 
       const data = await fetch(API_BASE + "/update/" + id, {
        method: "PUT",
@@ -53,7 +56,7 @@ function TodoItem(props){
 
     const deleteTodo = async(id) => {
       try{
-          const idToken = await firebase.auth().currentUser.getIdToken();
+          const idToken = await auth.currentUser.getIdToken();
 
           const response = await fetch(API_BASE + "/delete/" + id, {
               method: "DELETE",

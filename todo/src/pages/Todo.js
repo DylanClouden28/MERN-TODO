@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import TodoItem from "../TodoItem";
 
-import FirebaseAuth from "../FirebaseAuth";
-import firebase from 'firebase/compat/app';
+import { getAuth, signOut } from 'firebase/auth';
 import 'firebase/compat/auth';
+import { Context } from "../context/AuthContext";
 
 const API_BASE= 'http://localhost:4001/todo';
 
@@ -14,6 +14,8 @@ function Todo({firebase, isSignedIn}){
 
     // Add input state, we will store the user's input in this state
     const [input, setInput] = useState("");
+    const {user} = useContext(Context);
+    const auth = getAuth();
     
     // Store the target's value into the input state 
     const handleChange = (e) => {
@@ -28,7 +30,6 @@ function Todo({firebase, isSignedIn}){
         console.log("fetching");
     
         // Check if a user is signed in
-        const user = firebase.auth().currentUser;
         if (!user) {
             console.error("No user signed in.");
             // Optionally, handle the scenario where there is no user (e.g., redirect to login)
@@ -59,7 +60,7 @@ function Todo({firebase, isSignedIn}){
 
     const addItem = async () => {
       // Check for authenticated user
-      const user = firebase.auth().currentUser;
+
       if (!user) {
         console.error("No user signed in.");
         return;
@@ -116,7 +117,7 @@ function Todo({firebase, isSignedIn}){
               return <TodoItem key={item._id} name={name} id={_id} setItems={setItems} firebase={firebase} />   
           })}
       </div>
-      <button onClick={() => firebase.auth().signOut()} className="btn btn-primary">
+      <button onClick={() => signOut(auth).catch((error) => {console.log(error)})} className="btn btn-primary">
         Sign out
       </button>
   </div>

@@ -1,0 +1,14 @@
+export const uiConfig = {
+      signInSuccessUrl: 'todo',
+      signInOptions: [
+        {
+          provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+          defaultCountry: 'US',
+          recaptchaParameters: {
+            type: 'image', // 'audio'
+            size: 'invisible', // 'invisible' or 'compact'
+            badge: 'bottomleft' //' bottomright' or 'inline' applies to invisible.
+          },
+        }
+      ],
+    };
