@@ -43,7 +43,7 @@ function Todo({firebase, isSignedIn}){
                 method: "GET",
                 headers: {
                     "content-type": "application/json",
-                    "Authorization": `${idToken}` // Ensure you use 'Bearer' in the Authorization header
+                    "Authorization": `Bearer ${idToken}` // Ensure you use 'Bearer' in the Authorization header
                 },
             });
     
@@ -72,7 +72,7 @@ function Todo({firebase, isSignedIn}){
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `${idToken}`
+            "Authorization": `Bearer ${idToken}`
           },
           body: JSON.stringify({ name: input })
         });

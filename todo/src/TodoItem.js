@@ -46,7 +46,7 @@ function TodoItem(props){
        method: "PUT",
        headers: {
          "content-type" : "application/json",
-         "Authorization": `${idToken}`
+         "Authorization": `Bearer ${idToken}`
        },
        body: JSON.stringify({
          name: input,
@@ -62,7 +62,7 @@ function TodoItem(props){
               method: "DELETE",
               headers: {
                 "content-type" : "application/json",
-                "Authorization": `${idToken}`
+                "Authorization": `Bearer ${idToken}`
               },
             });
           if(!response.ok){

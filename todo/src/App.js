@@ -21,6 +21,9 @@ function App(firebase){
       },
       {
         path:"/todo", element:<ProtectedRoute><Todo firebase={firebase}/></ProtectedRoute>
+      },
+      {
+        path:"/", element:<Navigate to="/todo"/>
       }
     ])
 
